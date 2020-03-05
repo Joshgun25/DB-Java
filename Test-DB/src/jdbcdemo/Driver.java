@@ -57,7 +57,7 @@ public class Driver {
 						System.out.println("Enter the wanted columns name:");
 						for(int i = 0; i < 7; i++) {
 							System.out.println("\n" + i);
-							
+							// WILL CONTINUE HERE.
 						}
 						myRs = myStmt.executeQuery("select * from " + table);
 							if(table == "country" || table == "Country" || table == "COUNTRY") {
