@@ -14,6 +14,9 @@ public class Driver {
 			String hostname = "jdbc:mysql://localhost:3306/sys";
 			String user = "Joshgun";
 			String pass = "542599";
+			String sql;
+			String table;
+			String countryID, countryName, countryCapital, countryCapitalID, countryPopulation, countryArea;
 			// Make Connection
 			Connection myCon = DriverManager.getConnection(hostname + user + pass);
 			
@@ -37,7 +40,6 @@ public class Driver {
 				switch(command) {
 					case 1:
 						System.out.println("Enter the Table name:");
-						String table;
 						table = input.next();
 						myRs = myStmt.executeQuery("select * from " + table);
 							if(table == "country" || table == "Country" || table == "COUNTRY") {
@@ -71,7 +73,36 @@ public class Driver {
 								}
 							}
 						break;
+					
+					// Update the table
 					case 3:
+						System.out.println("Enter the Table name:");
+						table = input.next();
+						System.out.println("Enter the row ID:");
+						countryID = input.next();
+						
+						// For Country Table.
+						if(table == "country" || table == "Country" || table == "COUNTRY") {
+							System.out.println("Enter the new Country name:");
+							countryName = input.next();
+							System.out.println("Enter the new Capital name:");
+							countryCapital = input.next();
+							System.out.println("Enter the new Capital ID name:");
+							countryCapitalID = input.next();
+							System.out.println("Enter the new Population count:");
+							countryPopulation = input.next();
+							System.out.println("Enter the new Area count:");
+							countryArea = input.next();
+							
+							sql = "update country set name = " + countryName + ", capital = " + countryCapital +
+									", capital_id = " + countryCapitalID + ", population = " + countryPopulation + 
+									", area = " + countryArea + " where id = " + countryID;
+							
+							myStmt.executeUpdate(sql);
+						}
+						// For City Table.
+						
+						
 						break;
 					case 4:
 						break;
@@ -86,7 +117,7 @@ public class Driver {
 		
 			
 			// Insert Query
-			String sql = "insert into country" + "(name, capital, population, area)" + "values('Norway', 'Oslo', '554554','223232323')";
+			sql = "insert into country" + "(name, capital, population, area)" + "values('Norway', 'Oslo', '554554','223232323')";
 			myStmt.executeUpdate(sql);
 			
 			// Update Query
@@ -98,7 +129,7 @@ public class Driver {
 			myStmt.executeUpdate(sql);
 			
 			// Select Query
-			ResultSet myRs = myStmt.executeQuery("select * from country");
+			myRs = myStmt.executeQuery("select * from country");
 			while(myRs.next()) {
 				System.out.println(myRs.getString("ID") + "," + myRs.getString("NAME") + "," + myRs.getString("CAPITAL"));
 			}
