@@ -164,7 +164,27 @@ public class Driver {
 							myStmt.executeUpdate(sql);
 						}
 						break;
+					
+					// Delete the row
 					case 5:
+						System.out.println("Enter the Table name:");
+						table = input.next();
+						
+						// For Country table
+						if(table.equals("country") || table.equals("Country") || table.equals("COUNTRY")) {
+							System.out.println("Enter the country ID that you want to delete:");
+							countryID = input.next();
+							sql = "delete from country where id=" + countryID;
+							myStmt.executeUpdate(sql);
+						}
+						
+						// For City table
+						else if(table.equals("city") || table.equals("City") || table.equals("CITY")) {
+							System.out.println("Enter the City ID that you want to delete:");
+							cityID = input.next();
+							sql = "delete from city where id=" + cityID;
+							myStmt.executeUpdate(sql);
+						}
 						break;
 					default:
 						break;
