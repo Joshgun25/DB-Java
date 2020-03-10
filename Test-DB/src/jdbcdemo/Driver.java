@@ -16,23 +16,52 @@ public class Driver {
 			String pass = "542599";
 			String sql;
 			String table;
+			// Variables for Country table
 			String countryID, countryName, countryCapital, countryCapitalID, countryPopulation, countryArea;
+			// Variables for City table
 			String cityID, cityName, cityLocation, cityArea, cityLatitude, cityLongitude;
+			int command;
+			ResultSet myRs;
 
 			// Make Connection
 			Connection myCon = DriverManager.getConnection(hostname, user, pass);
 			
 			// Create Statement
 			Statement myStmt = myCon.createStatement();
-			int command,count;
-			ResultSet myRs;
+			
+			// SQL query for creating table City
+			sql = "CREATE TABLE IF NOT EXISTS CITY (\r\n" + 
+					"    ID INT NOT NULL AUTO_INCREMENT,\r\n" + 
+					"    NAME VARCHAR(45) DEFAULT NULL,\r\n" + 
+					"    LOCATION VARCHAR(45) DEFAULT NULL,\r\n" + 
+					"    AREA INT DEFAULT NULL,\r\n" + 
+					"    LATITUDE INT DEFAULT NULL,\r\n" + 
+					"    LONGITUDE INT DEFAULT NULL,\r\n" + 
+					"    PRIMARY KEY (ID)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+			myStmt.executeUpdate(sql);
+			
+			// SQL query for creating table Country
+			sql = "CREATE TABLE IF NOT EXISTS COUNTRY (\r\n" + 
+					"    ID INT NOT NULL AUTO_INCREMENT,\r\n" + 
+					"    NAME VARCHAR(45) DEFAULT NULL,\r\n" + 
+					"    CAPITAL VARCHAR(45) DEFAULT NULL,\r\n" + 
+					"    CAPITAL_ID INT NOT NULL,\r\n" + 
+					"    POPULATION INT DEFAULT NULL,\r\n" + 
+					"    AREA INT DEFAULT NULL,\r\n" + 
+					"    PRIMARY KEY (ID),\r\n" +
+					"    FOREIGN KEY (CAPITAL_ID)\r\n" + 
+					"    REFERENCES CITY (ID)\r\n ON UPDATE RESTRICT ON DELETE CASCADE\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+			myStmt.executeUpdate(sql);
 			
 			do {
+				
 				// The operations menu.
 				System.out.println(
-						"Enter your selection:\n1 for list all table.\n2 for listing specific columns.\n"
-						+ "3 for inserting new row to the selected table.\n4 for update the selected row.\n"
-						+ "5 for deleting the selected row.\n0 for Exit.");
+						"Enter your selection:\n1 for list all table.\n2 for inserting new row to the selected table.\n"
+						+ "3 for update the selected row.\n"
+						+ "4 for deleting the selected row.\n0 for Exit.");
 				// Getting the command from the user.
 				command = input.nextInt();
 				
@@ -45,40 +74,18 @@ public class Driver {
 						myRs = myStmt.executeQuery("select * from " + table);
 						if(table.equals("country") || table.equals("Country") || table.equals("COUNTRY")) {
 							while(myRs.next()) {
-								System.out.println(myRs.getString("ID") + "		" + myRs.getString("NAME") + "		" + myRs.getString("CAPITAL") + "		" + myRs.getString("POPULATION") + "		" + myRs.getString("AREA"));
+								System.out.println(myRs.getString("ID") + "\t" + myRs.getString("NAME") + "\t" + myRs.getString("CAPITAL") + "\t" + myRs.getString("POPULATION") + "\t" + myRs.getString("AREA"));
 							}
 						}
 						else if(table.equals("city") || table.equals("City") || table.equals("CITY")){
 							while(myRs.next()) {
-								System.out.println(myRs.getString("ID") + "		" + myRs.getString("NAME") + "		" + myRs.getString("LOCATION") +  "		" + myRs.getString("AREA") +  "		" + myRs.getString("LATITUDE") +  "		" + myRs.getString("LONGITUDE"));
+								System.out.println(myRs.getString("ID") + "\t" + myRs.getString("NAME") + "\t" + myRs.getString("LOCATION") +  "\t" + myRs.getString("AREA") +  "\t" + myRs.getString("LATITUDE") +  "\t" + myRs.getString("LONGITUDE"));
 							}
 						}
-						break;
-					
-					// List the selected columns
-					case 2:
-						System.out.println("Enter the Table name:");
-						table = input.next();
-						System.out.println("Enter the wanted columns name:");
-						for(int i = 0; i < 7; i++) {
-							System.out.println("\n" + i);
-							// WILL CONTINUE HERE.
-						}
-						myRs = myStmt.executeQuery("select * from " + table);
-							if(table == "country" || table == "Country" || table == "COUNTRY") {
-								while(myRs.next()) {
-									System.out.println(myRs.getString("ID") + "," + myRs.getString("NAME") + "," + myRs.getString("CAPITAL"));
-								}
-							}
-							else if(table == "city" || table == "City" || table == "CITY") {
-								while(myRs.next()) {
-									System.out.println(myRs.getString("ID") + "," + myRs.getString("NAME") + "," + myRs.getString("CAPITAL"));
-								}
-							}
 						break;
 					
 					// Insert new data
-					case 3:
+					case 2:
 						System.out.println("Enter the Table name:");
 						table = input.next();
 						
@@ -93,6 +100,7 @@ public class Driver {
 							System.out.println("Enter the new Area count:");
 							countryArea = input.next();
 							
+							// Insert SQL query
 							sql = "insert into country" + "(name, capital, population, area)" + "values('" + countryName + "', '" + countryCapital + "', '" + countryPopulation + "', '" + countryArea + "')";
 							
 							myStmt.executeUpdate(sql);
@@ -111,6 +119,7 @@ public class Driver {
 							System.out.println("Enter the new City Longitude:");
 							cityLongitude = input.next();
 							
+							// Insert SQL query
 							sql = "insert into city" + "(name, location, area, latitude, longitude)" + "values('" + cityName + "', '" + cityLocation + "', '" + cityArea + "', '" + cityLatitude + "', '" + cityLongitude + "')";
 							
 							myStmt.executeUpdate(sql);
@@ -118,7 +127,7 @@ public class Driver {
 						break;
 					
 					// Update the table
-					case 4:
+					case 3:
 						System.out.println("Enter the Table name:");
 						table = input.next();
 						
@@ -135,6 +144,7 @@ public class Driver {
 							System.out.println("Enter the new Area count:");
 							countryArea = input.next();
 							
+							// Update SQL query
 							sql = "update country set name = '" + countryName + "', capital = '" + countryCapital +
 									"', population = '" + countryPopulation + 
 									"', area = '" + countryArea + "' where id = " + countryID;
@@ -157,6 +167,7 @@ public class Driver {
 							System.out.println("Enter the new City Longitude:");
 							cityLongitude = input.next();
 							
+							// Update SQL query
 							sql = "update city set name = '" + cityName + "', location = '" + cityLocation +
 									"', area = '" + cityArea + 
 									"', latitude = '" + cityLatitude + "', longitude = '" + cityLongitude +"' where id = " + cityID;
@@ -166,7 +177,7 @@ public class Driver {
 						break;
 					
 					// Delete the row
-					case 5:
+					case 4:
 						System.out.println("Enter the Table name:");
 						table = input.next();
 						
@@ -174,6 +185,8 @@ public class Driver {
 						if(table.equals("country") || table.equals("Country") || table.equals("COUNTRY")) {
 							System.out.println("Enter the country ID that you want to delete:");
 							countryID = input.next();
+							
+							// Delete SQL query
 							sql = "delete from country where id=" + countryID;
 							myStmt.executeUpdate(sql);
 						}
@@ -182,6 +195,8 @@ public class Driver {
 						else if(table.equals("city") || table.equals("City") || table.equals("CITY")) {
 							System.out.println("Enter the City ID that you want to delete:");
 							cityID = input.next();
+							
+							// Delete SQL query
 							sql = "delete from city where id=" + cityID;
 							myStmt.executeUpdate(sql);
 						}
