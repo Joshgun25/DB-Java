@@ -17,7 +17,7 @@ public class Driver {
 			String sql;
 			String table;
 			// Variables for Country table
-			String countryID, countryName, countryCapital, countryCapitalID, countryPopulation, countryArea;
+			String countryID, countryName, countryCapital, countryPopulation, countryArea;
 			// Variables for City table
 			String cityID, cityName, cityLocation, cityArea, cityLatitude, cityLongitude;
 			int command;
@@ -56,7 +56,6 @@ public class Driver {
 			myStmt.executeUpdate(sql);
 			
 			do {
-				
 				// The operations menu.
 				System.out.println(
 						"Enter your selection:\n1 for list all table.\n2 for inserting new row to the selected table.\n"
@@ -204,28 +203,7 @@ public class Driver {
 					default:
 						break;
 				}
-			}while(command != 0);
-			
-			
-		
-			
-			// Insert Query
-			//sql = "insert into country" + "(name, capital, population, area)" + "values('Norway', 'Oslo', '554554','223232323')";
-			//myStmt.executeUpdate(sql);
-			
-			// Update Query
-			//sql = "update country set capital = 'Ankara' where id=2";
-			//myStmt.executeUpdate(sql);
-			
-			// Delete Query
-			//sql = "delete from country where name='Russia'";
-			//myStmt.executeUpdate(sql);
-			
-			// Select Query
-			//myRs = myStmt.executeQuery("select * from country");
-			//while(myRs.next()) {
-			//	System.out.println(myRs.getString("ID") + "," + myRs.getString("NAME") + "," + myRs.getString("CAPITAL"));
-			//}
+			}while(command != 0);  // end for do-while
 		}
 		
 		catch(Exception exc) {
