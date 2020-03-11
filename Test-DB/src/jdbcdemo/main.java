@@ -2,7 +2,7 @@ package jdbcdemo;
 
 import java.sql.*;
 import java.util.Scanner;
-public class Driver {
+public class main {
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
@@ -46,12 +46,12 @@ public class Driver {
 					"    ID INT NOT NULL AUTO_INCREMENT,\r\n" + 
 					"    NAME VARCHAR(45) DEFAULT NULL,\r\n" + 
 					"    CAPITAL VARCHAR(45) DEFAULT NULL,\r\n" + 
-					"    CAPITAL_ID INT NOT NULL,\r\n" + 
+					"    CAPITAL_ID INT DEFAULT NULL,\r\n" + 
 					"    POPULATION INT DEFAULT NULL,\r\n" + 
 					"    AREA INT DEFAULT NULL,\r\n" + 
 					"    PRIMARY KEY (ID),\r\n" +
 					"    FOREIGN KEY (CAPITAL_ID)\r\n" + 
-					"    REFERENCES CITY (ID)\r\n ON UPDATE RESTRICT ON DELETE CASCADE\r\n" + 
+					"    REFERENCES CITY (ID)\r\n" + 
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
 			myStmt.executeUpdate(sql);
 			
@@ -75,11 +75,13 @@ public class Driver {
 							while(myRs.next()) {
 								System.out.println(myRs.getString("ID") + "\t" + myRs.getString("NAME") + "\t" + myRs.getString("CAPITAL") + "\t" + myRs.getString("POPULATION") + "\t" + myRs.getString("AREA"));
 							}
+							System.out.println("\n");
 						}
 						else if(table.equals("city") || table.equals("City") || table.equals("CITY")){
 							while(myRs.next()) {
 								System.out.println(myRs.getString("ID") + "\t" + myRs.getString("NAME") + "\t" + myRs.getString("LOCATION") +  "\t" + myRs.getString("AREA") +  "\t" + myRs.getString("LATITUDE") +  "\t" + myRs.getString("LONGITUDE"));
 							}
+							System.out.println("\n");
 						}
 						break;
 					
